@@ -26,13 +26,13 @@ jobs:
         run: "composer install --no-interaction --no-progress --no-suggest"
 
       - name: no namespace, local phpmd bin
-        run: vendor/bin/phpmd test CheckStyleRenderer naming,cleancode | cs2pr --graceful-warnings
+        run: vendor/bin/phpmd test CheckStyleRenderer naming,cleancode --ignore-violations-on-exit | cs2pr --graceful-warnings
 
       - name: no namespace, global phpmd bin
-        run: phpmd test CheckStyleRenderer naming,cleancode | cs2pr --graceful-warnings
+        run: phpmd test CheckStyleRenderer naming,cleancode --ignore-violations-on-exit | cs2pr --graceful-warnings
 
       - name: namespaced, local phpmd bin
-        run: vendor/bin/phpmd test MyRenderers\\CheckStyleRenderer naming,cleancode | cs2pr --graceful-warnings
+        run: vendor/bin/phpmd test MyRenderers\\CheckStyleRenderer naming,cleancode --ignore-violations-on-exit | cs2pr --graceful-warnings
 
       - name: namespaced, global phpmd bin
-        run: phpmd test MyRenderers\\CheckStyleRenderer naming,cleancode | cs2pr --graceful-warnings
+        run: phpmd test MyRenderers\\CheckStyleRenderer naming,cleancode --ignore-violations-on-exit | cs2pr --graceful-warnings
