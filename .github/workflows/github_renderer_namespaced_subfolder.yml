@@ -1,8 +1,60 @@
-name: Github_Renderer_On_SubfolderFolder
-on: push
+name: Lukas_Bestle_Github_Renderer_On_SubfolderFolder
+on: pull_request
 
 jobs:
   phpmd_root_folder:
+    name: Local bin, no namespace
+
+    runs-on: ubuntu-latest
+    env:
+      php: "7.4"
+      extensions: mbstring, ctype, curl, gd, apcu, memcached
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.php }}
+          extensions: ${{ env.extensions }}
+          coverage: none
+          tools: composer:v2
+
+      - name: "Install locked dependencies from composer.lock"
+        run: "composer install --no-interaction --no-progress --no-suggest"
+
+      - name: Run Local PHPMD binary
+        run: vendor/bin/phpmd test GitHubRenderer naming --ignore-violations-on-exit
+
+  phpmd_root_folder_global_binary:
+    name: Global bin, no namespace
+
+    runs-on: ubuntu-latest
+    env:
+      php: "7.4"
+      extensions: mbstring, ctype, curl, gd, apcu, memcached
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.php }}
+          extensions: ${{ env.extensions }}
+          coverage: none
+          tools: composer:v2, phpmd
+
+      - name: "Install locked dependencies from composer.lock"
+        run: "composer install --no-interaction --no-progress --no-suggest"
+
+      - name: Run Global PHPMD binary
+        run: phpmd test GitHubRenderer naming --ignore-violations-on-exit
+
+  phpmd_namespaced_local_binary:
     name: Local bin, Namespaced Lukas Bestle's Github Renderer
 
     runs-on: ubuntu-latest
@@ -26,9 +78,9 @@ jobs:
         run: "composer install --no-interaction --no-progress --no-suggest"
 
       - name: Run local PHPMD binary
-        run: src/bin/phpmd test PHPMD\\Renderer\\GitHubRenderer naming --ignore-violations-on-exit
+        run: vendor/bin/phpmd test MyRenderers\\GitHubRenderer naming --ignore-violations-on-exit
 
-  phpmd_global_binary:
+  phpmd_namespaced_global_binary:
     name: Global bin, Namespaced Lukas Bestle's Github Renderer
 
     runs-on: ubuntu-latest
@@ -52,4 +104,4 @@ jobs:
         run: "composer install --no-interaction --no-progress --no-suggest"
 
       - name: Run global PHPMD binary
-        run: phpmd test PHPMD\\Renderer\\GitHubRenderer naming --ignore-violations-on-exit
+        run: phpmd test MyRenderers\\GitHubRenderer naming --ignore-violations-on-exit
