@@ -1,7 +1,8 @@
 {
     "name": "ffflabs/phpmd_dependency",
     "require": {
-        "phpmd/phpmd": "^2.9.1"
+        "phpmd/phpmd": "^2.9.1",
+        "kint-php/kint": "^3.3"
     },
     "authors": [
         {
