@@ -1,0 +1,17 @@
+{
+    "name": "ffflabs/phpmd_dependency",
+    "require": {
+        "phpmd/phpmd": "^2.9.1"
+    },
+    "authors": [
+        {
+            "name": "Felipe Figueroa",
+            "email": "amenadiel@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "MyRenderers\\": "src/my_renderers"
+        }
+    }
+}
