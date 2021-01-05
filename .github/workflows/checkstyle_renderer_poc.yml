@@ -1,0 +1,107 @@
+name: CheckStyle_Comments
+on: pull_request
+
+jobs:
+  # CheckStyle, local bin, No namespace
+  local_no_namespace:
+    name: CheckStyle, local bin, No namespace
+
+    runs-on: ubuntu-latest
+    env:
+      php: "7.4"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.php }}
+          extensions: ${{ env.extensions }}
+          coverage: none
+          tools: composer:v2, cs2pr, phpmd
+
+      - name: "Install locked dependencies from composer.lock"
+        run: "composer install --no-interaction --no-progress --no-suggest"
+
+      - name: no namespace, local phpmd bin
+        run: vendor/bin/phpmd test CheckStyleRenderer naming,cleancode --ignore-violations-on-exit | cs2pr --graceful-warnings
+
+  # CheckStyle global bin, No namespace
+  global_no_namespace:
+    name: CheckStyle global bin, No namespace
+
+    runs-on: ubuntu-latest
+    env:
+      php: "7.4"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.php }}
+          extensions: ${{ env.extensions }}
+          coverage: none
+          tools: composer:v2, cs2pr, phpmd
+
+      - name: "Install locked dependencies from composer.lock"
+        run: "composer install --no-interaction --no-progress --no-suggest"
+
+      - name: no namespace, global phpmd bin
+        run: phpmd test CheckStyleRenderer naming,cleancode --ignore-violations-on-exit | cs2pr --graceful-warnings
+
+  # CheckStyle local bin, Namespaced
+  local_namespaced:
+    name: CheckStyle local bin, Namespaced
+
+    runs-on: ubuntu-latest
+    env:
+      php: "7.4"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.php }}
+          extensions: ${{ env.extensions }}
+          coverage: none
+          tools: composer:v2, cs2pr, phpmd
+
+      - name: "Install locked dependencies from composer.lock"
+        run: "composer install --no-interaction --no-progress --no-suggest"
+
+      - name: namespaced, local phpmd bin
+        run: vendor/bin/phpmd test MyRenderers\\CheckStyleRenderer naming,cleancode --ignore-violations-on-exit | cs2pr --graceful-warnings
+
+  # CheckStyle global bin, Namespaced
+  global_namespaced:
+    name: CheckStyle global bin, Namespaced
+
+    runs-on: ubuntu-latest
+    env:
+      php: "7.4"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.php }}
+          extensions: ${{ env.extensions }}
+          coverage: none
+          tools: composer:v2, cs2pr, phpmd
+
+      - name: "Install locked dependencies from composer.lock"
+        run: "composer install --no-interaction --no-progress --no-suggest"
+
+      - name: namespaced, global phpmd bin
+        run: phpmd test MyRenderers\\CheckStyleRenderer naming,cleancode --ignore-violations-on-exit | cs2pr --graceful-warnings

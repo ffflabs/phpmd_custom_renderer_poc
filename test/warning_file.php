@@ -1,11 +1,12 @@
 <?php
-
+$global_xx=1;
 class Test
 {
-    public function __construct()
+    public function __construct(bool $should_run=true)
     {
-        $variable1 = 1;
-        $variable2 = 0;
+    	global $global_xx;
+    	$x=$global_xx;
+        $variableNameThatIsWayTooLong = 0;
 
     }
 }
